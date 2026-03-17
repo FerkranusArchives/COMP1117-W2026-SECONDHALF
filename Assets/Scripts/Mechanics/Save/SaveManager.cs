@@ -1,9 +1,9 @@
 using System.IO;
 using UnityEngine;
 
-public class SaveManager : MonoBehaviour
+public class SaveManager : MonoBehaviour // gotta be monobehaviour to attach to GOBJ
 {
-    private string savePath;    // Store the path where my game will be saved
+    private string savePath;  // Store the path where my game will be saved
 
     private void Awake()
     {

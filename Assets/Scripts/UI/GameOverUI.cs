@@ -28,13 +28,13 @@ public class GameOverUI : MonoBehaviour
         // 1. Read the data from the Save Manager
         Vector3 playerPos = saveManager.LoadGame();
 
-        // Safety check!
+        // Safety check! need a player position to do anything
         if(playerPos != null)
         {
-            // 2. Reactivate the player.
+            // 2. Reactivate the player (deactivates after death)
             player.SetActive(true);
 
-            // 3. Set the player back to the checkpoint position and reset values
+            // 3. Set the player back to the checkpoint position and reset values, taken from saved data in save manager
             player.transform.position = playerPos;
 
             Player playerScript = player.GetComponent<Player>();
@@ -71,7 +71,7 @@ public class GameOverUI : MonoBehaviour
 
     public void ShowGameOver()
     {
-        StartCoroutine(GameOverSequence());
+        StartCoroutine(GameOverSequence()); // coroutine does things on a timer, meshes well with main game execution
     }
 
     private IEnumerator GameOverSequence()
@@ -93,6 +93,7 @@ public class GameOverUI : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
+    // restart and reload level, or quit to menu scene
     public void RestartLevel() => SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     public void QuitToMenu() => SceneManager.LoadScene("MainMenu");
 }

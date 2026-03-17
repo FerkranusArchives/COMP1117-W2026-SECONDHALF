@@ -45,7 +45,7 @@ public class Player : Character
 
     private void FixedUpdate()
     {
-        if (isDead || isStunned) return;
+        if (isDead || isStunned) return; // dont move if cant move
         Move();
     }
 
@@ -60,9 +60,9 @@ public class Player : Character
 
     public void OnJump(InputAction.CallbackContext context)
     {
-        if(context.started && !isDead && !isStunned)
+        if(context.started && !isDead && !isStunned) // press button AND not be dead or stunned
         {
-            if(isGrounded || jumpsRemaining > 0)
+            if(isGrounded || jumpsRemaining > 0) // on the ground or have a double jump left
             {
                 Jump();
             }
@@ -82,7 +82,7 @@ public class Player : Character
         rBody.linearVelocity = new Vector2(rBody.linearVelocity.x, jumpForce);
         anim.SetTrigger("Jump");
 
-        jumpsRemaining--;
+        jumpsRemaining--; // do a jump means you have one less jump
     }
 
     private void CheckEnvironment()
@@ -93,7 +93,7 @@ public class Player : Character
         // Reset jumps when the player lands
         if(isGrounded && !wasGrounded)
         {
-            jumpsRemaining = maxJumps;
+            jumpsRemaining = maxJumps; // if hit ground, jumps replenish
         }
 
         // Safety: if the player walks off a lege without jumping.
@@ -139,7 +139,7 @@ public class Player : Character
         yield return new WaitForSeconds(hurtStunTime);
         isStunned = false;
 
-        // iFrame Flashing Effect
+        // iFrame Flashing Effect - visual indicator/feedback for clarity
         float timer = 0;
         while (timer < iframeDuration)
         {
@@ -148,7 +148,7 @@ public class Player : Character
             timer += flashInterval;
         }
 
-        sRend.enabled = true;
+        sRend.enabled = true; // stop flickering when iframes stop
         isInvulnerable = false;
     }
 
@@ -160,7 +160,7 @@ public class Player : Character
 
         if(sRend != null)
         {
-            sRend.sortingLayerName = "Foreground";
+            sRend.sortingLayerName = "Foreground"; // bring to front so anim is visible
             sRend.sortingOrder = 100;
         }
 
@@ -192,8 +192,8 @@ public class Player : Character
             gameOverUI.ShowGameOver();
         }
 
-        // Destroy(gameObject);
-        gameObject.SetActive(false);    // Instead of destroying and instantiating the player, we will deactivate, move and reactivate.
+        // Destroy(gameObject); <- dont do that
+        gameObject.SetActive(false); // Instead of destroying and instantiating the player, we will deactivate, move and reactivate.
     }
 
     private void ApplyKnockback()
